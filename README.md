@@ -21,6 +21,7 @@ Sandbox for experimenting with VLM (Vision Language Models)
 * [Action-Atlas](https://mrsalehi.github.io/action-atlas/)
 * [sharegpt4video](https://sharegpt4video.github.io/)
 * [VideoEval-Pro](https://github.com/TIGER-AI-Lab/VideoEval-Pro)
+* [OpenCV - Top VLM Evaluation Metrics for Optimal Performance Analysis](https://learnopencv.com/vlm-evaluation-metrics/)
 
 
 ## Online courses
