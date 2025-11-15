@@ -7,7 +7,7 @@ A C++ command-line interface for Vision Language Model (VLM) inference using Ope
 ### C++ VLM Inference Client
 A production-ready multimodal inference client supporting text and image prompts with multiple API providers.
 
-**[📖 Full Documentation](OpenAI-completion-client/cpp/Readme.md)**
+**[📖 Full Documentation](vlm-inference-client/cpp/Readme.md)**
 
 #### Key Features
 - 🔌 Multiple API provider support (OpenAI, Together, vLLM, and more)
@@ -29,7 +29,7 @@ A production-ready multimodal inference client supporting text and image prompts
 ## Additional Resources
 
 ### Python Reference Implementation
-  * [Python client](OpenAI-completion-client/python/Readme.md) - Alternative implementation in Python
+  * [Python client](vlm-inference-client/python/Readme.md) - Alternative implementation in Python
 
 ### Example Code
   * **Google AI Examples** - Gemini API and Vertex AI examples in [`google/`](google/)
