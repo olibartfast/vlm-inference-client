@@ -1,20 +1,39 @@
-# Vision Language Models Playground
+# VLM Inference Client
 
-A sandbox for experimenting with Vision Language Models (VLM).
+A C++ command-line interface for Vision Language Model (VLM) inference using OpenAI-compatible APIs.
 
-## Projects
+## Main Project
 
-### OpenAI API-compliant Multimodal Inference Client
-  * [C++ Implementation](OpenAI-completion-client/cpp/Readme.md)
-  * [Python Implementation](OpenAI-completion-client/python/Readme.md)
+### C++ VLM Inference Client
+A production-ready multimodal inference client supporting text and image prompts with multiple API providers.
 
-### Google AI Examples
-  * Gemini API and Vertex AI examples in the [`google/`](google/) folder
-  * See [Google AI documentation](docs/google.md) for setup guides and resources
+**[📖 Full Documentation](OpenAI-completion-client/cpp/Readme.md)**
 
-### Llama Multimodal
-  * Llama multimodal utilities in the [`llama/`](llama/) folder
-  * See [Llama documentation](docs/llama.md) for code references
+#### Key Features
+- 🔌 Multiple API provider support (OpenAI, Together, vLLM, and more)
+- 🖼️ Multimodal capabilities (text + multiple images)
+- 🔄 Automatic image preprocessing and resizing
+- ⚙️ Configurable detail levels and token limits
+- 🌐 Support for local files and image URLs
+
+#### Quick Start
+```bash
+./vlm-inference-client \
+    --prompt "Describe this image" \
+    --images image.jpg \
+    --model gpt-4o \
+    --api_endpoint https://api.openai.com/v1/chat/completions \
+    --api_key_env OPENAI_API_KEY
+```
+
+## Additional Resources
+
+### Python Reference Implementation
+  * [Python client](OpenAI-completion-client/python/Readme.md) - Alternative implementation in Python
+
+### Example Code
+  * **Google AI Examples** - Gemini API and Vertex AI examples in [`google/`](google/)
+  * **Llama Utilities** - Multimodal utilities in [`llama/`](llama/)
 
 ## Documentation
 

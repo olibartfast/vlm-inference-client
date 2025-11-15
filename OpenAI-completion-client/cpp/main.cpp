@@ -86,7 +86,7 @@ size_t WriteCallback(void *contents, size_t size, size_t nmemb, std::string *s) 
 int main(int argc, char* argv[]) {
     try {
         // Set up command line options
-        cxxopts::Options options("OpenAI client completion", "Test vlm/llm models using OpenAI's API");
+        cxxopts::Options options("VLM Inference Client", "Vision Language Model inference using OpenAI-compatible APIs");
         options.add_options()
             ("p,prompt", "Text prompt for image analysis", cxxopts::value<std::string>())
             ("a,api_key_env", "API key environment variable", cxxopts::value<std::string>())

@@ -1,6 +1,6 @@
-# OpenAI Completion Client
+# VLM Inference Client
 
-A C++ command-line interface (CLI) tool for sending multimodal prompts (text and images) to Large Language Model (LLM) APIs compatible with OpenAI's chat completions format. The tool supports multiple API providers and can handle both local images and image URLs in prompts.
+A production-ready C++ command-line interface for Vision Language Model (VLM) inference using OpenAI-compatible APIs. Send multimodal prompts (text and images) to various LLM providers with support for local images and URLs.
 
 ## Key Features
 
@@ -21,14 +21,30 @@ A C++ command-line interface (CLI) tool for sending multimodal prompts (text and
   - Custom endpoint URL support
   - Configurable maximum token limit for responses
 
-## Dependencies
+## Building
+
+### Dependencies
 
 - C++17 or later
+- CMake 3.10+
 - CURL (for HTTP requests)
+- OpenSSL
+- OpenCV (image processing)
+
+**Automatically fetched via CMake:**
 - nlohmann/json (JSON handling)
 - cxxopts (command-line argument parsing)
-- OpenCV (image processing)
-- Rene Nyffenegger's Base64 Library for encoding image data as base64 (Base64 encoding)
+- cpp-base64 (Base64 encoding)
+
+### Build Instructions
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+```
+
+The binary will be created as `vlm-inference-client`.
 
 ## Environment Variables
 
@@ -39,32 +55,35 @@ Set up your API credentials using environment variables and pass it as cli input
 Basic command structure:
 
 ```bash
-./openai-completion-client \
+./vlm-inference-client \
     --prompt <text_prompt> \
     --images <image_paths...> \
     --model <model_name> \
-    --api_endpoint <api_provider_endpoint>
+    --api_endpoint <api_provider_endpoint> \
     --api_key_env <api_provider_key_env_var> \
     [optional parameters]
 ```
 
 ### Command Line Options
 
-- `-p, --prompt`: Text prompt for image analysis
-- `-i, --images`: One or more image file paths or URLs
-- `-m, --model`: Model name to use (depending on api provider e.g., gpt-4o, claude3.5, lama3.2-90b vision...)
-- `-e, --api_endpoint`: API endpoint URL (depends from provider) 
-- `-a  --api_key_env ` : API key to read via environment variable, 
-- `-d, --detail`: Image detail level (low, auto, high) [default: low]
-- `-t, --tokens`: Maximum tokens for response [default: 300]
-- `-s, --size`: Target image size for encoding [default: 512]
+- `-p, --prompt`: Text prompt for image analysis (required)
+- `-i, --images`: One or more image file paths or URLs (required)
+- `-m, --model`: Model name to use (e.g., `gpt-4o`, `llama-3.2-90b-vision-instruct`)
+- `-e, --api_endpoint`: API endpoint URL (required)
+- `-a, --api_key_env`: Environment variable name containing API key (required)
+- `-r, --provider`: API provider name (optional)
+- `-d, --detail`: Image detail level: `low`, `auto`, or `high` [default: `low`]
+- `-t, --tokens`: Maximum tokens for response [default: `300`]
+- `-s, --size`: Target image size for encoding in pixels [default: `512`]
 - `-h, --help`: Print usage information
 
 ### Example Commands
 
-1. Analyze local images:
+1. **OpenAI GPT-4o with local images:**
 ```bash
-./openai-completion-client \
+export OPENAI_API_KEY="your-api-key-here"
+
+./vlm-inference-client \
     --prompt "Compare these images" \
     --images image1.jpg image2.jpg \
     --model gpt-4o \
@@ -72,6 +91,38 @@ Basic command structure:
     --api_key_env OPENAI_API_KEY \
     --detail low \
     --tokens 100
+```
+
+2. **Together AI with Llama Vision:**
+```bash
+export TOGETHER_API_KEY="your-api-key-here"
+
+./vlm-inference-client \
+    --prompt "Describe what you see" \
+    --images photo.jpg \
+    --model meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo \
+    --api_endpoint https://api.together.xyz/v1/chat/completions \
+    --api_key_env TOGETHER_API_KEY
+```
+
+3. **Using image URLs:**
+```bash
+./vlm-inference-client \
+    --prompt "What is in this image?" \
+    --images https://example.com/image.jpg \
+    --model gpt-4o-mini \
+    --api_endpoint https://api.openai.com/v1/chat/completions \
+    --api_key_env OPENAI_API_KEY
+```
+
+4. **vLLM local server:**
+```bash
+./vlm-inference-client \
+    --prompt "Analyze this" \
+    --images input.jpg \
+    --model llava-v1.5-7b \
+    --api_endpoint http://localhost:8000/v1/chat/completions \
+    --api_key_env VLLM_API_KEY
 ```
 
 ## Image Processing Details
