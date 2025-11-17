@@ -35,7 +35,7 @@ A production-ready multimodal inference client supporting text and image prompts
   * **Google AI Examples** - Gemini API and Vertex AI examples in [`google/`](google/)
   * **Llama Utilities** - Multimodal utilities in [`llama/`](llama/)
 
-## Documentation
+## Other Documentation/Resources
 
 - **[Benchmarks](docs/benchmarks.md)** - VLM evaluation benchmarks and leaderboards
 - **[Courses & Tutorials](docs/courses.md)** - Online courses and learning resources
