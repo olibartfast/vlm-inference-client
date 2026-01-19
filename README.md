@@ -46,3 +46,4 @@ A production-ready multimodal inference client supporting text and image prompts
 - **[Cloud GPU](docs/cloud-gpu.md)** - GPU rental services
 - **[Google AI](docs/google.md)** - Google-specific resources (Gemini, Vertex AI)
 - **[Llama](docs/llama.md)** - Llama-specific resources
+- **[Nvidia Dynamo](https://developer.nvidia.com/dynamo)** - Nvidia framework that serves VLM/LLM models by wrapping tensort-llm/vllm/sglang backends
