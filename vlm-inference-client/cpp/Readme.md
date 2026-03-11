@@ -68,7 +68,7 @@ Basic command structure:
 
 - `-p, --prompt`: Text prompt for image analysis (required)
 - `-i, --images`: One or more image file paths or URLs (required)
-- `-m, --model`: Model name to use (e.g., `gpt-4o`, `llama-3.2-90b-vision-instruct`)
+- `-m, --model`: Model name to use (e.g., `gpt-5.2`, `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8`)
 - `-e, --api_endpoint`: API endpoint URL (required)
 - `-a, --api_key_env`: Environment variable name containing API key (required)
 - `-r, --provider`: API provider name (optional)
@@ -79,40 +79,42 @@ Basic command structure:
 
 ### Example Commands
 
-1. **OpenAI GPT-4o with local images:**
+1. **OpenAI GPT-5.2 with local images:**
 ```bash
 export OPENAI_API_KEY="your-api-key-here"
 
 ./vlm-inference-client \
     --prompt "Compare these images" \
     --images image1.jpg image2.jpg \
-    --model gpt-4o \
+    --model gpt-5.2 \
     --api_endpoint https://api.openai.com/v1/chat/completions \
     --api_key_env OPENAI_API_KEY \
     --detail low \
     --tokens 100
 ```
 
-2. **Together AI with Llama Vision:**
+2. **Together AI with Llama 4 Maverick:**
 ```bash
 export TOGETHER_API_KEY="your-api-key-here"
 
 ./vlm-inference-client \
     --prompt "Describe what you see" \
     --images photo.jpg \
-    --model meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo \
+    --model meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8 \
     --api_endpoint https://api.together.xyz/v1/chat/completions \
     --api_key_env TOGETHER_API_KEY
 ```
 
 3. **Using image URLs:**
 ```bash
+export GOOGLE_API_KEY="your-api-key-here"
+
 ./vlm-inference-client \
     --prompt "What is in this image?" \
     --images https://example.com/image.jpg \
-    --model gpt-4o-mini \
-    --api_endpoint https://api.openai.com/v1/chat/completions \
-    --api_key_env OPENAI_API_KEY
+    --model gemini-2.5-flash \
+    --api_endpoint https://generativelanguage.googleapis.com/v1beta/openai/chat/completions \
+    --api_key_env GOOGLE_API_KEY
 ```
 
 4. **vLLM local server:**
@@ -131,4 +133,3 @@ export TOGETHER_API_KEY="your-api-key-here"
 - Non-square images are padded with black borders to create square output
 - Final images are encoded as base64 JPEG before API submission
 - URLs are passed directly to the API without modification
-

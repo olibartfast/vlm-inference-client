@@ -12,9 +12,9 @@ Usage:
     # Monitor video file
     python examples/security_monitoring.py ./parking_lot.mp4
 
-    # Continuous webcam monitoring with GPT-4o
+    # Continuous webcam monitoring with GPT-5.2
     OPENAI_API_KEY=... python examples/security_monitoring.py 0 \
-        --provider openai --model gpt-4o --continuous
+        --provider openai --model gpt-5.2 --continuous
 """
 
 import argparse
@@ -27,7 +27,7 @@ from vlm_agent_gateway.config import get_api_key, get_default_endpoint
 def main():
     parser = argparse.ArgumentParser(description="Security monitoring with VLM")
     parser.add_argument("video", help="Video file, RTSP URL, or device index")
-    parser.add_argument("--model", default="gpt-4o")
+    parser.add_argument("--model", default="gpt-5.2")
     parser.add_argument("--provider", default="openai")
     parser.add_argument("--endpoint", default=None)
     parser.add_argument("--zone", default="the monitored area", help="Description of restricted zone")

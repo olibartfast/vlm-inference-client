@@ -17,6 +17,8 @@ applications driven by agentic AI — using cloud APIs and self-hosted inference
 | **Qwen 3.5-VL** | 8B / 250B+ (MoE) | Unified Pixels-as-Tokens | **Open SOTA**; Single-stream architecture (no separate encoder) | HF, vLLM, DashScope |
 | **Claude 4.5 Opus** | Closed | Frames as images | Best-in-class OCR and dense document/interface reasoning | Anthropic API |
 | **Qwen3-VL** | 8B / 235B (MoE) | Native video + dynamic FPS | 3D grounding, visual agent, stable production choice | HF, vLLM, DashScope API |
+| **Kimi K2.5** | Closed / open-weight variants | Native multimodal | Strong agentic multimodal system with image and video support | Kimi, Azure AI Foundry |
+| **GLM-4.6V / 4.5V** | Closed / mixed release model family | Native multimodal | Current GLM vision line for multimodal reasoning and video-adjacent workflows | Z.AI |
 | **GLM-4.1V-Thinking** | 9B | Native video, time-index tokens | Reasoning-first (RLCS), extreme efficiency for edge | HF, vLLM, Zhipu API |
 | **Llama 3.2 Vision (Cerebras)** | 11B / 90B | Frames as images | **Extreme Speed**; Hundreds of tokens/sec for real-time analysis | Cerebras API |
 
@@ -29,6 +31,25 @@ applications driven by agentic AI — using cloud APIs and self-hosted inference
 | **GPT-4o / 4o-mini** | Closed | Stable legacy; Broad capability, widely available |
 | **Qwen 2.5-VL** | 3B / 72B | Stable legacy; Event pinpointing, absolute time encoding |
 | **LLaVA-Video** | 7B / 72B | Strong on VideoMME benchmarks |
+
+### SOTA Open-Weight Models (March 11, 2026)
+
+If you want the strongest self-hostable options rather than closed APIs, these are the current high-signal choices:
+
+| Model | Class | Why it matters | Best fit |
+|-------|-------|----------------|----------|
+| **Qwen3-VL** | Apache-2.0 open weights | Qwen positions it as its strongest VLM line so far, with improved video dynamics, spatial reasoning, and agent interaction. | General-purpose open default for image + video |
+| **MiniCPM-V 4.5** | Apache-2.0 open weights | OpenBMB positions it as a top sub-30B multimodal model with unusually strong high-FPS and long-video efficiency. | Edge and cost-sensitive video workloads |
+| **GLM-4.1V-9B-Thinking** | Open weights | Z.ai reports state-of-the-art performance among 10B-class VLMs, with reasoning-heavy behavior that competes well above its size. | Small-model reasoning and OCR-heavy pipelines |
+| **Kimi K2.5 open variants** | Open-weight release track | Moonshot positions K2.5 as a native multimodal model family with image and video support plus strong agent tooling. | Frontier-style multimodal experimentation |
+| **Llama 4 Maverick** | Source-available weights | Native multimodal MoE with large context and strong cloud/self-hosted ecosystem support. | High-throughput deployments when license terms are acceptable |
+
+Notes:
+- `Qwen/Qwen3-VL-8B-Instruct` is the safest default open model to recommend in this repo today.
+- `openbmb/MiniCPM-V-4_5` is especially attractive when video token efficiency matters more than absolute frontier accuracy.
+- `Kimi K2.5` belongs in the VLM landscape because Moonshot explicitly ships it for text, images, and video; use it when you want an agentic multimodal stack rather than a small self-hosted edge model.
+- `GLM-5` is not listed here as a primary video VLM because Z.AI currently separates it from the vision-specific `GLM-4.6V` / `GLM-4.5V` line.
+- `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8` is powerful, but it is not OSI-open; treat it as source-available under Meta's community license.
 
 ### How Video Input Works
 
@@ -60,7 +81,7 @@ and supports all the models listed above.
 ```bash
 pip install vllm>=0.8.0 qwen-vl-utils>=0.1.0
 
-vllm serve Qwen/Qwen3.5-VL-8B-Instruct \
+vllm serve Qwen/Qwen3-VL-8B-Instruct \
     --limit-mm-per-prompt video=1 \
     --max-model-len 65536 \
     --gpu-memory-utilization 0.95
@@ -79,7 +100,7 @@ vllm serve zai-org/GLM-4.1V-9B-Thinking \
 
 | Model | Min GPU | Recommended | Notes |
 |-------|---------|-------------|-------|
-| Qwen 3.5-VL-8B | RTX 4070 16GB | RTX 5090 / A100 | SOTA 2026 Edge |
+| Qwen 3-VL-8B | RTX 4070 16GB | RTX 5090 / A100 | Strong current edge default |
 | GLM-4.1V-9B-Thinking | RTX 3090 24GB | A100 40GB | Best sub-10B reasoning |
 | Llama 4 Maverick (400B) | 8× A100 80GB | 8× H200 | Open-weights frontier |
 | Qwen 3.5-VL-250B+ (MoE) | 8× H100 80GB | 8× H200/B200 | Enterprise SOTA |
@@ -127,7 +148,7 @@ vlm-agent-gateway monitor \
     --video ./elderly_room.mp4 \
     --alert-prompt "Is anyone falling, lying on the floor, or in distress?" \
     --provider google \
-    --model gemini-3-flash \
+    --model gemini-2.5-flash \
     --fps 1 --max-frames 30
 
 # Continuous webcam monitoring with local vLLM
@@ -135,7 +156,7 @@ vlm-agent-gateway monitor \
     --video 0 \
     --provider openai \
     --endpoint http://localhost:8000/v1/chat/completions \
-    --model Qwen/Qwen3.5-VL-8B-Instruct \
+    --model Qwen/Qwen3-VL-8B-Instruct \
     --alert-prompt "Is anyone falling or showing signs of distress?" \
     --fps 0.5 --continuous --interval 15 --window-frames 8 \
     --output-jsonl ./fall_alerts.jsonl
@@ -147,7 +168,7 @@ vlm-agent-gateway monitor \
 vlm-agent-gateway monitor \
     --video rtsp://camera.local:554/stream \
     --provider google \
-    --model gemini-3-flash \
+    --model gemini-2.5-flash \
     --alert-prompt "Has anyone entered the restricted zone marked by yellow tape?" \
     --fps 0.5 --continuous --interval 10
 ```
@@ -158,7 +179,7 @@ vlm-agent-gateway monitor \
 vlm-agent-gateway monitor \
     --video ./factory_floor.mp4 \
     --provider openai \
-    --model gpt-5 \
+    --model gpt-5.2 \
     --alert-prompt "Is any worker not wearing a hard hat or safety vest?" \
     --fps 1 --max-frames 20
 ```
@@ -182,10 +203,10 @@ python vlm-agent-gateway/main.py \
     --workflow moa \
     --prompt "Is anyone in this scene falling or in distress?" \
     --images frame_001.jpg frame_002.jpg frame_003.jpg \
-    --models Qwen/Qwen2.5-VL-72B-Instruct gpt-4o \
+    --models meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8 gpt-5.2 \
     --providers together openai \
     --endpoints https://api.together.xyz/v1/chat/completions https://api.openai.com/v1/chat/completions \
-    --aggregator-model gpt-4o \
+    --aggregator-model gpt-5.2 \
     --aggregator-provider openai
 ```
 
@@ -198,7 +219,7 @@ python vlm-agent-gateway/main.py \
     --workflow sequential \
     --prompt "Analyze these surveillance frames for safety incidents" \
     --images frame_*.jpg \
-    --models gpt-4o-mini gpt-4o \
+    --models gpt-5.2 gpt-5.2 \
     --providers openai openai
 ```
 
@@ -208,12 +229,12 @@ python vlm-agent-gateway/main.py \
 
 | Use Case | Recommended Model | Why |
 |----------|-------------------|-----|
-| **Quick prototyping** | GPT-4o via OpenAI API | No setup, reliable, good video understanding |
-| **Cost-effective cloud** | Qwen2.5-VL-72B via Together AI | Strong performance, ~$0.60/M input tokens |
+| **Quick prototyping** | Gemini 2.5 Flash via Google API | Stable multimodal default with native video input |
+| **Cost-effective cloud** | Llama 4 Maverick via Together AI | Current Together recommendation for vision workloads |
 | **Best reasoning (self-hosted)** | GLM-4.1V-9B-Thinking on vLLM | 9B model that competes with 72B, chain-of-thought |
-| **Edge / low-resource** | Qwen2.5-VL-3B + AWQ on vLLM | Fits on 12GB GPU, still capable |
-| **Long video (1hr+)** | Qwen2.5-VL-72B or Gemini 2.x | Dynamic FPS + absolute time encoding |
-| **Maximum accuracy** | Qwen 3.5-VL-250B+ or GLM-4.5V | Frontier performance, needs multi-GPU |
+| **Edge / low-resource** | Qwen3-VL-8B + AWQ on vLLM | Modern open-weight option for single-GPU deployments |
+| **Long video (1hr+)** | Gemini 2.5 Flash or Qwen3-VL | Large context windows with video-aware input handling |
+| **Maximum accuracy** | GPT-5.2 or Gemini 3 Pro | Frontier closed-model performance |
 | **Lowest latency / Real-time** | Llama 3.2 Vision on Cerebras | Extreme inference speed (100s of tokens/sec) |
 
 
