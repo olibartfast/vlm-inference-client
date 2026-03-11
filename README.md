@@ -18,6 +18,9 @@ pip install -e ".[dev,video]"
 ## Quick Start
 
 ```bash
+# Install the local package and CLI
+pip install -e ".[dev,video]"
+
 # Sequential workflow (default) - each stage builds on previous
 agent-gateway run --workflow sequential \
     --prompt "Summarize the tradeoffs of MoE vs dense models"
@@ -42,6 +45,10 @@ agent-gateway run --workflow react \
     --images image.jpg \
     --model gpt-5.2 \
     --tools describe detect_objects count_objects
+
+# Together AI text-only reasoning with NVIDIA Nemotron 3 Super
+TOGETHER_API_KEY=... python3 examples/together_nemotron_reasoning.py \
+    --prompt "Design an agent architecture for triaging IT support tickets"
 
 # Video monitoring - continuous or single-shot
 agent-gateway monitor \
@@ -119,26 +126,31 @@ See [docs/video-vlm-agents.md](docs/video-vlm-agents.md) for model recommendatio
 | Mistral | `mistral` | `MISTRAL_API_KEY` |
 | Cerebras | `cerebras` | `CEREBRAS_API_KEY` |
 
+Together-hosted text model example:
+- `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8` for long-context reasoning and structured text generation
+
 ## Python API
 
 ```python
 from multimodal_agent_gateway import run_sequential, run_react, run_monitoring
 from multimodal_agent_gateway.cli import make_agent
 
-# Create agents
-agent = make_agent("gpt-5.2", "openai", "https://api.openai.com/v1/chat/completions")
+# Create a text-only Together AI agent
+agent = make_agent(
+    "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8",
+    "together",
+    "https://api.together.xyz/v1/chat/completions",
+)
 
-# Run workflow
-result = run_react(
-    agent=agent,
-    prompt="Describe this image and count the people",
-    image_paths=["image.jpg"],
+# Run a text-only workflow
+result = run_sequential(
+    agents=[agent],
+    prompt="Summarize the tradeoffs between MoE and dense decoder-only models.",
+    image_paths=[],
     detail="low",
     max_tokens=500,
     resize=False,
     target_size=(512, 512),
-    enabled_tools=["describe", "count_objects"],
-    max_steps=5,
 )
 print(result["content"])
 ```
@@ -148,6 +160,7 @@ print(result["content"])
 - `examples/react_image_analysis.py` shows a tool-using ReAct loop for OCR, counting, and scene analysis.
 - `examples/conditional_routing.py` routes an image task between OCR, scene, and safety specialists.
 - `examples/local_open_model.py` runs a self-hosted open model through a local OpenAI-compatible endpoint.
+- `examples/together_nemotron_reasoning.py` runs NVIDIA Nemotron 3 Super on Together AI for text-only reasoning and long-context tasks.
 - `examples/multi_model_analysis.py`, `examples/fall_detection.py`, and `examples/security_monitoring.py` cover MoA and monitoring flows.
 
 ## C++ Client
@@ -172,8 +185,8 @@ See [vlm-inference-client/cpp/Readme.md](vlm-inference-client/cpp/Readme.md) for
 ## Documentation
 
 - [Video VLM Agents Guide](docs/video-vlm-agents.md) - Video-capable VLMs, vLLM deployment, hardware sizing
-- [API Services](docs/api-services.md) - Vision multimodal API providers
-- [Benchmarks](docs/benchmarks.md) - VLM evaluation benchmarks
+- [API Services](docs/api-services.md) - LLM and multimodal API providers
+- [Benchmarks](docs/benchmarks.md) - LLM, VLM, and video evaluation references
 - [Inference](docs/inference.md) - Inference frameworks and tools
 
 ## License

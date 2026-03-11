@@ -1,6 +1,6 @@
-# Vision Multimodal API Services
+# LLM and Multimodal API Services
 
-A tentative list of multimodal API providers:
+A tentative list of API providers for text-only LLMs and multimodal models:
 
 * [Anthropic Claude Vision](https://docs.anthropic.com/en/docs/build-with-claude/vision)
 * [OpenAI Vision](https://platform.openai.com/docs/guides/vision)
@@ -11,3 +11,7 @@ A tentative list of multimodal API providers:
 * [Stability AI](https://platform.stability.ai/docs/api-reference)
 * [Together AI](https://api.together.ai)
 * [Cerebras Cloud](https://cloud.cerebras.ai)
+
+Text-first model example used in this repo:
+
+* [Together AI: NVIDIA Nemotron 3 Super 120B A12B FP8](https://api.together.ai/models/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8)

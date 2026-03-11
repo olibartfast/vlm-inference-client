@@ -31,7 +31,7 @@ from multimodal_agent_gateway.config import get_api_key, get_default_endpoint
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Fall detection with VLM monitoring")
+    parser = argparse.ArgumentParser(description="Fall detection with multimodal video monitoring")
     parser.add_argument("video", help="Video file, RTSP URL, or device index (0 for webcam)")
     parser.add_argument("--model", default="gemini-2.5-flash")
     parser.add_argument("--provider", default="google")

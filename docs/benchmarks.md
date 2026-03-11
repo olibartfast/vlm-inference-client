@@ -1,4 +1,4 @@
-# VLM Benchmarks
+# LLM and VLM Benchmarks
 
 ## General Benchmark Sites
 * [MMMU Benchmark](https://mmmu-benchmark.github.io)
@@ -15,3 +15,8 @@
 * [ShareGPT4Video](https://sharegpt4video.github.io/)
 * [VideoEval-Pro](https://github.com/TIGER-AI-Lab/VideoEval-Pro)
 * [OpenCV - Top VLM Evaluation Metrics for Optimal Performance Analysis](https://learnopencv.com/vlm-evaluation-metrics/)
+
+## Text Reasoning References
+* [Arena-Hard-Auto](https://lmarena.ai/benchmarks)
+* [IFEval](https://huggingface.co/spaces/google/IFEval-leaderboard)
+* [BFCL V3 Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html)

@@ -3,7 +3,7 @@
 Local Open-Model Example
 
 Demonstrates a fully local workflow against an OpenAI-compatible server such as
-vLLM or SGLang serving an open VLM.
+vLLM or SGLang serving an open multimodal model.
 
 Usage:
     python examples/local_open_model.py image.jpg
@@ -21,7 +21,7 @@ from multimodal_agent_gateway.models import Agent
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run a local open VLM through the sequential workflow")
+    parser = argparse.ArgumentParser(description="Run a local open multimodal model through the sequential workflow")
     parser.add_argument("image", help="Image file path or URL")
     parser.add_argument("--prompt", "-p", default="Describe the image and list the most important visual details.")
     parser.add_argument("--endpoint", default="http://localhost:8000/v1/chat/completions")

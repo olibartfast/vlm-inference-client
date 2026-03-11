@@ -25,7 +25,7 @@ from multimodal_agent_gateway.config import get_api_key, get_default_endpoint
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Security monitoring with VLM")
+    parser = argparse.ArgumentParser(description="Security monitoring with multimodal video analysis")
     parser.add_argument("video", help="Video file, RTSP URL, or device index")
     parser.add_argument("--model", default="gpt-5.2")
     parser.add_argument("--provider", default="openai")
