@@ -37,6 +37,7 @@ dev = [
     "pytest-cov>=4.0.0",
     "pytest-mock>=3.10.0",
     "ruff>=0.1.0",
+    "pylint>=3.0.0",
     "mypy>=1.0.0",
 ]
 all = [
@@ -87,3 +88,19 @@ warn_return_any = true
 warn_unused_ignores = true
 packages = ["ghostgrid"]
 mypy_path = "src"
+
+[tool.pylint.main]
+py-version = "3.10"
+source-roots = ["src"]
+
+[tool.pylint.messages_control]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "R0903",  # too-few-public-methods
+    "W0212",  # protected-access
+]
+
+[tool.pylint.format]
+max-line-length = 120
