@@ -94,6 +94,9 @@ py-version = "3.10"
 source-roots = ["src"]
 extension-pkg-allow-list = ["cv2"]
 
+[tool.pylint.typecheck]
+generated-members = ["cv2.*"]
+
 [tool.pylint.messages_control]
 disable = [
     "C0114",  # missing-module-docstring

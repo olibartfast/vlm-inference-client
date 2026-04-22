@@ -121,12 +121,9 @@ def run_continuous_monitoring(  # pylint: disable=too-many-arguments,too-many-po
     Every `interval_seconds`, captures `window_frames` frames at `fps`,
     sends them to the VLM, and processes the alert.
     """
-    try:
-        import cv2  # pylint: disable=import-outside-toplevel
-    except ImportError as err:
-        raise ImportError("opencv-python is required for continuous monitoring") from err
+    import cv2  # pylint: disable=import-outside-toplevel
 
-    cap, source = open_video_capture(source)
+    cap, source = open_video_capture(source, _cv2=cv2)
 
     log.info(
         "Starting continuous monitoring: source=%s, model=%s, interval=%.0fs, window=%d frames @ %.1f fps",
@@ -142,13 +139,11 @@ def run_continuous_monitoring(  # pylint: disable=too-many-arguments,too-many-po
 
     try:
         while True:
-            # Collect a window of frames
             frames: list[bytes] = []
             idx = 0
             while len(frames) < window_frames:
                 ret, frame = cap.read()
                 if not ret:
-                    # For files, loop back; for live, break
                     if isinstance(source, int):
                         break
                     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
