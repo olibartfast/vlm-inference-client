@@ -17,6 +17,7 @@ PROVIDER_ENV_MAP: dict[str, str] = {
     "groq": "GROQ_API_KEY",
     "mistral": "MISTRAL_API_KEY",
     "cerebras": "CEREBRAS_API_KEY",
+    "openrouter": "OPENROUTER_API_KEY",
 }
 
 PROVIDER_DEFAULTS: dict[str, str] = {
@@ -27,6 +28,7 @@ PROVIDER_DEFAULTS: dict[str, str] = {
     "groq": "https://api.groq.com/openai/v1/chat/completions",
     "mistral": "https://api.mistral.ai/v1/chat/completions",
     "cerebras": "https://api.cerebras.ai/v1/chat/completions",
+    "openrouter": "https://openrouter.ai/api/v1/chat/completions",
 }
 
 
