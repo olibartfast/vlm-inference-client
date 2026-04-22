@@ -13,8 +13,8 @@ import argparse
 import json
 import sys
 
-from multimodal_agent_gateway import run_moa
-from multimodal_agent_gateway.cli import make_agent
+from ghostgrid import run_moa
+from ghostgrid.cli import make_agent
 
 
 def main():

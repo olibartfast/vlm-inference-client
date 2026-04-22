@@ -16,8 +16,8 @@ Usage:
 import argparse
 import json
 
-from multimodal_agent_gateway import run_sequential
-from multimodal_agent_gateway.models import Agent
+from ghostgrid import run_sequential
+from ghostgrid.models import Agent
 
 
 def main() -> None:

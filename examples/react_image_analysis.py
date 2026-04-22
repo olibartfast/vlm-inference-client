@@ -18,9 +18,9 @@ import argparse
 import json
 import sys
 
-from multimodal_agent_gateway import run_react
-from multimodal_agent_gateway.cli import make_agent
-from multimodal_agent_gateway.config import resolve_endpoint
+from ghostgrid import run_react
+from ghostgrid.cli import make_agent
+from ghostgrid.config import resolve_endpoint
 
 
 def main() -> None:

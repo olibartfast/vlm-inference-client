@@ -10,8 +10,8 @@ Input ──► [Router Agent] ──► category
                              final output
 """
 
-from multimodal_agent_gateway.models import Agent
-from multimodal_agent_gateway.providers import run_agent
+from ghostgrid.models import Agent
+from ghostgrid.providers import run_agent
 
 
 def run_conditional(

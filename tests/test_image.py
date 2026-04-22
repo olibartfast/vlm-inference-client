@@ -2,7 +2,7 @@
 
 from types import SimpleNamespace
 
-from multimodal_agent_gateway.image import encode_image
+from ghostgrid.image import encode_image
 
 
 def test_encode_image_url_uses_timeout_and_status_check(monkeypatch):
@@ -21,8 +21,8 @@ def test_encode_image_url_uses_timeout_and_status_check(monkeypatch):
 
         return SimpleNamespace(content=b"raw-image", raise_for_status=raise_for_status)
 
-    monkeypatch.setattr("multimodal_agent_gateway.image.resize_with_padding", fake_resize_with_padding)
-    monkeypatch.setattr("multimodal_agent_gateway.image.requests.get", fake_get)
+    monkeypatch.setattr("ghostgrid.image.resize_with_padding", fake_resize_with_padding)
+    monkeypatch.setattr("ghostgrid.image.requests.get", fake_get)
 
     encoded = encode_image("https://example.com/image.jpg", resize=True)
 

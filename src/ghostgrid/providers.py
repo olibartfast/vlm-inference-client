@@ -5,8 +5,8 @@ import time
 
 import requests
 
-from multimodal_agent_gateway.image import encode_image, is_url
-from multimodal_agent_gateway.models import Agent, AgentResult
+from ghostgrid.image import encode_image, is_url
+from ghostgrid.models import Agent, AgentResult
 
 
 def create_payload(

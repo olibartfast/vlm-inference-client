@@ -8,10 +8,10 @@ prompt ──► [Agent: Thought + Action] ──► tool call
                        ──► Final Answer
 """
 
-from multimodal_agent_gateway.config import REACT_SYSTEM_PROMPT
-from multimodal_agent_gateway.models import Agent, Tool
-from multimodal_agent_gateway.providers import run_agent
-from multimodal_agent_gateway.tools import BUILTIN_TOOLS, _parse_react_step
+from ghostgrid.config import REACT_SYSTEM_PROMPT
+from ghostgrid.models import Agent, Tool
+from ghostgrid.providers import run_agent
+from ghostgrid.tools import BUILTIN_TOOLS, _parse_react_step
 
 
 def run_react(

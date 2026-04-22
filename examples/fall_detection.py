@@ -2,7 +2,7 @@
 """
 Fall Detection Example
 
-Demonstrates using the Multimodal Agent Gateway for fall detection monitoring.
+Demonstrates using the ghostgrid for fall detection monitoring.
 Works with local vLLM, Together AI, or OpenAI.
 
 Usage:
@@ -26,8 +26,8 @@ Usage:
 import argparse
 import sys
 
-from multimodal_agent_gateway import run_monitoring
-from multimodal_agent_gateway.config import get_api_key, get_default_endpoint
+from ghostgrid import run_monitoring
+from ghostgrid.config import get_api_key, get_default_endpoint
 
 
 def main():

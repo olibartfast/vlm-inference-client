@@ -10,19 +10,19 @@ import logging
 import time
 from datetime import datetime, timezone
 
-from multimodal_agent_gateway.config import MONITOR_SYSTEM_PROMPT
-from multimodal_agent_gateway.models import AlertEvent
-from multimodal_agent_gateway.providers import (
+from ghostgrid.config import MONITOR_SYSTEM_PROMPT
+from ghostgrid.models import AlertEvent
+from ghostgrid.providers import (
     build_anthropic_video_payload,
     build_video_payload,
     normalize_response,
     send_anthropic_request,
     send_request,
 )
-from multimodal_agent_gateway.tools.parsing import parse_monitor_output
-from multimodal_agent_gateway.video import extract_frames_cv2, frames_to_base64
+from ghostgrid.tools.parsing import parse_monitor_output
+from ghostgrid.video import extract_frames_cv2, frames_to_base64
 
-log = logging.getLogger("multimodal-agent-gateway.monitoring")
+log = logging.getLogger("ghostgrid.monitoring")
 
 
 def run_monitoring_cycle(

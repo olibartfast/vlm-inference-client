@@ -1,4 +1,4 @@
-"""Command-line interface for Multimodal Agent Gateway."""
+"""Command-line interface for ghostgrid."""
 
 import argparse
 import json
@@ -7,16 +7,16 @@ import os
 import sys
 import uuid
 
-from multimodal_agent_gateway.config import (
+from ghostgrid.config import (
     CODE_AGENT_SYSTEM_PROMPT,
     CODE_AGENT_TOOLS,
     DEFAULT_ENDPOINT,
     PROVIDER_ENV_MAP,
     resolve_endpoint,
 )
-from multimodal_agent_gateway.models import Agent
-from multimodal_agent_gateway.tools import BUILTIN_TOOLS
-from multimodal_agent_gateway.workflows import (
+from ghostgrid.models import Agent
+from ghostgrid.tools import BUILTIN_TOOLS
+from ghostgrid.workflows import (
     WORKFLOW_REGISTRY,
     run_conditional,
     run_iterative,
@@ -183,9 +183,9 @@ def cmd_monitor(args) -> None:
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        prog="agent-gateway",
+        prog="ghostgrid",
         description=(
-            "Multimodal Agent Gateway — multi-provider LLM and VLM inference with "
+            "ghostgrid — multi-provider LLM and VLM inference with "
             "sequential, parallel, conditional, iterative, MoA, ReAct, and monitoring workflows"
         ),
     )

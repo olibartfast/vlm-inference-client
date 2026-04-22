@@ -2,9 +2,9 @@
 
 import pytest
 
-from multimodal_agent_gateway.models import Agent, AgentResult
-from multimodal_agent_gateway.workflows.iterative import run_iterative
-from multimodal_agent_gateway.workflows.moa import run_moa
+from ghostgrid.models import Agent, AgentResult
+from ghostgrid.workflows.iterative import run_iterative
+from ghostgrid.workflows.moa import run_moa
 
 
 def _agent(name: str) -> Agent:
@@ -42,7 +42,7 @@ def test_iterative_raises_when_evaluator_fails(monkeypatch):
         ]
     )
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.iterative.run_agent", lambda *args, **kwargs: next(results))
+    monkeypatch.setattr("ghostgrid.workflows.iterative.run_agent", lambda *args, **kwargs: next(results))
 
     with pytest.raises(RuntimeError, match="Evaluator failed during iteration 1: timeout"):
         run_iterative(
@@ -92,7 +92,7 @@ def test_moa_raises_when_aggregator_fails(monkeypatch):
         ]
     )
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.moa.run_agent", lambda *args, **kwargs: next(results))
+    monkeypatch.setattr("ghostgrid.workflows.moa.run_agent", lambda *args, **kwargs: next(results))
 
     with pytest.raises(RuntimeError, match="Aggregator agent failed: upstream 502"):
         run_moa(

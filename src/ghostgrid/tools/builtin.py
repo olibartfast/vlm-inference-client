@@ -5,8 +5,8 @@ Built-in ReAct tools for vision analysis and code/filesystem operations.
 import os
 import subprocess
 
-from multimodal_agent_gateway.models import Agent, Tool
-from multimodal_agent_gateway.providers import run_agent
+from ghostgrid.models import Agent, Tool
+from ghostgrid.providers import run_agent
 
 _SHELL_BLOCKED = "Shell execution is disabled. Re-run with --allow-shell to enable run_bash."
 

@@ -8,8 +8,8 @@ Input ──► [Agent-1] ──► output-1
                    prompt + output-1 + output-2 ──► [Agent-3] ──► final
 """
 
-from multimodal_agent_gateway.models import Agent
-from multimodal_agent_gateway.providers import run_agent
+from ghostgrid.models import Agent
+from ghostgrid.providers import run_agent
 
 
 def run_sequential(

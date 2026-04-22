@@ -5,8 +5,8 @@ import sys
 
 import pytest
 
-from multimodal_agent_gateway import cli
-from multimodal_agent_gateway.cli import build_agents, main
+from ghostgrid import cli
+from ghostgrid.cli import build_agents, main
 
 
 def test_build_agents_uses_provider_specific_default_endpoints(monkeypatch):
@@ -52,13 +52,13 @@ def test_cli_images_optional_for_react(monkeypatch, capsys):
             "provider": "openai",
         }
 
-    monkeypatch.setattr("multimodal_agent_gateway.cli.run_react", fake_run_react)
+    monkeypatch.setattr("ghostgrid.cli.run_react", fake_run_react)
 
     monkeypatch.setattr(
         sys,
         "argv",
         [
-            "agent-gateway",
+            "ghostgrid",
             "run",
             "--workflow",
             "react",
@@ -94,14 +94,14 @@ def test_cli_code_agent_flag_selects_code_tools(monkeypatch, capsys):
             "provider": "openai",
         }
 
-    monkeypatch.setattr("multimodal_agent_gateway.cli.run_react", fake_run_react)
+    monkeypatch.setattr("ghostgrid.cli.run_react", fake_run_react)
 
-    from multimodal_agent_gateway.config import CODE_AGENT_SYSTEM_PROMPT, CODE_AGENT_TOOLS
+    from ghostgrid.config import CODE_AGENT_SYSTEM_PROMPT, CODE_AGENT_TOOLS
 
     monkeypatch.setattr(
         sys,
         "argv",
-        ["agent-gateway", "run", "--workflow", "react", "--model", "gpt-4o", "--prompt", "fix bug", "--code-agent"],
+        ["ghostgrid", "run", "--workflow", "react", "--model", "gpt-4o", "--prompt", "fix bug", "--code-agent"],
     )
     main()
 
@@ -127,13 +127,13 @@ def test_cli_allow_shell_flag(monkeypatch, capsys):
             "provider": "openai",
         }
 
-    monkeypatch.setattr("multimodal_agent_gateway.cli.run_react", fake_run_react)
+    monkeypatch.setattr("ghostgrid.cli.run_react", fake_run_react)
 
     monkeypatch.setattr(
         sys,
         "argv",
         [
-            "agent-gateway",
+            "ghostgrid",
             "run",
             "--workflow",
             "react",
@@ -167,13 +167,13 @@ def test_cli_explicit_tools_override_code_agent_defaults(monkeypatch, capsys):
             "provider": "openai",
         }
 
-    monkeypatch.setattr("multimodal_agent_gateway.cli.run_react", fake_run_react)
+    monkeypatch.setattr("ghostgrid.cli.run_react", fake_run_react)
 
     monkeypatch.setattr(
         sys,
         "argv",
         [
-            "agent-gateway",
+            "ghostgrid",
             "run",
             "--workflow",
             "react",
@@ -208,7 +208,7 @@ def test_main_allows_text_only_run(monkeypatch, capsys):
     monkeypatch.setattr(
         sys,
         "argv",
-        ["agent-gateway", "run", "--prompt", "Hello", "--model", "gpt-5.2", "--workflow", "sequential"],
+        ["ghostgrid", "run", "--prompt", "Hello", "--model", "gpt-5.2", "--workflow", "sequential"],
     )
 
     cli.main()

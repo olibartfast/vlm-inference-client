@@ -2,7 +2,7 @@
 """
 Security Monitoring Example
 
-Demonstrates using the Multimodal Agent Gateway for security camera monitoring.
+Demonstrates using the ghostgrid for security camera monitoring.
 Monitors for intrusion, unauthorized access, or suspicious activity.
 
 Usage:
@@ -20,8 +20,8 @@ Usage:
 import argparse
 import sys
 
-from multimodal_agent_gateway import run_monitoring
-from multimodal_agent_gateway.config import get_api_key, get_default_endpoint
+from ghostgrid import run_monitoring
+from ghostgrid.config import get_api_key, get_default_endpoint
 
 
 def main():

@@ -1,1 +1,1 @@
-"""Multimodal Agent Gateway test suite."""
+"""ghostgrid test suite."""

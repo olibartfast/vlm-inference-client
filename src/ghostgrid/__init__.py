@@ -1,5 +1,5 @@
 """
-Multimodal Agent Gateway - Multi-provider LLM and VLM inference with workflow support.
+ghostgrid - Multi-provider LLM and VLM inference with workflow support.
 
 A framework for building agentic applications with text, vision, and multimodal models.
 Supports 7 providers (OpenAI, Anthropic, Google, Together, Azure, Groq, Mistral)
@@ -10,7 +10,7 @@ from pathlib import Path
 
 # Core models
 # Configuration
-from multimodal_agent_gateway.config import (
+from ghostgrid.config import (
     DEFAULT_ENDPOINT,
     PROVIDER_ENV_MAP,
     WORKFLOW_CHOICES,
@@ -20,11 +20,11 @@ from multimodal_agent_gateway.config import (
 )
 
 # Image utilities
-from multimodal_agent_gateway.image import encode_image, is_url, resize_with_padding
-from multimodal_agent_gateway.models import Agent, AgentResult, AlertEvent, Tool
+from ghostgrid.image import encode_image, is_url, resize_with_padding
+from ghostgrid.models import Agent, AgentResult, AlertEvent, Tool
 
 # Provider functions
-from multimodal_agent_gateway.providers import (
+from ghostgrid.providers import (
     build_video_payload,
     create_payload,
     normalize_response,
@@ -33,13 +33,13 @@ from multimodal_agent_gateway.providers import (
 )
 
 # Tools
-from multimodal_agent_gateway.tools import BUILTIN_TOOLS
+from ghostgrid.tools import BUILTIN_TOOLS
 
 # Video utilities
-from multimodal_agent_gateway.video import extract_frames_cv2, frames_to_base64
+from ghostgrid.video import extract_frames_cv2, frames_to_base64
 
 # Workflows
-from multimodal_agent_gateway.workflows import (
+from ghostgrid.workflows import (
     WORKFLOW_REGISTRY,
     run_conditional,
     run_continuous_monitoring,

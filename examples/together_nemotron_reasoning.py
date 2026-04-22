@@ -20,9 +20,9 @@ import json
 import sys
 from pathlib import Path
 
-from multimodal_agent_gateway import run_iterative, run_sequential
-from multimodal_agent_gateway.cli import make_agent
-from multimodal_agent_gateway.config import resolve_endpoint
+from ghostgrid import run_iterative, run_sequential
+from ghostgrid.cli import make_agent
+from ghostgrid.config import resolve_endpoint
 
 
 DEFAULT_MODEL = "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8"

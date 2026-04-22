@@ -1,10 +1,10 @@
 """
-Shared test fixtures for Multimodal Agent Gateway tests.
+Shared test fixtures for ghostgrid tests.
 """
 
 import pytest
 
-from multimodal_agent_gateway.models import Agent, AgentResult
+from ghostgrid.models import Agent, AgentResult
 
 
 @pytest.fixture

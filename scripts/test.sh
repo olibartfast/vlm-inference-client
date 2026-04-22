@@ -29,4 +29,4 @@ mypy src/ || true
 
 # Run tests with coverage
 echo "Running pytest..."
-pytest tests/ --cov=src/vlm_agent_gateway --cov-report=term-missing "$@"
+pytest tests/ --cov=src/ghostgrid --cov-report=term-missing "$@"

@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from multimodal_agent_gateway.config import (
+from ghostgrid.config import (
     CODE_AGENT_SYSTEM_PROMPT,
     CODE_AGENT_TOOLS,
     DEFAULT_ENDPOINT,
@@ -90,7 +90,7 @@ def test_code_agent_system_prompt_has_placeholder():
 
 def test_code_agent_system_prompt_is_distinct_from_react_prompt():
     """The code-agent prompt should be different from the vision ReAct prompt."""
-    from multimodal_agent_gateway.config import REACT_SYSTEM_PROMPT
+    from ghostgrid.config import REACT_SYSTEM_PROMPT
 
     assert CODE_AGENT_SYSTEM_PROMPT != REACT_SYSTEM_PROMPT
 

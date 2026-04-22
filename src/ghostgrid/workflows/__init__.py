@@ -1,16 +1,16 @@
 """Workflows package for text, vision, and multimodal execution patterns."""
 
-from multimodal_agent_gateway.workflows.conditional import run_conditional
-from multimodal_agent_gateway.workflows.iterative import run_iterative
-from multimodal_agent_gateway.workflows.moa import run_moa
-from multimodal_agent_gateway.workflows.monitoring import (
+from ghostgrid.workflows.conditional import run_conditional
+from ghostgrid.workflows.iterative import run_iterative
+from ghostgrid.workflows.moa import run_moa
+from ghostgrid.workflows.monitoring import (
     run_continuous_monitoring,
     run_monitoring,
     run_monitoring_cycle,
 )
-from multimodal_agent_gateway.workflows.parallel import run_parallel
-from multimodal_agent_gateway.workflows.react import run_react
-from multimodal_agent_gateway.workflows.sequential import run_sequential
+from ghostgrid.workflows.parallel import run_parallel
+from ghostgrid.workflows.react import run_react
+from ghostgrid.workflows.sequential import run_sequential
 
 # Workflow registry for CLI dispatch
 WORKFLOW_REGISTRY = {

@@ -1,6 +1,6 @@
 """Tests for provider payload construction."""
 
-from multimodal_agent_gateway.providers import create_payload
+from ghostgrid.providers import create_payload
 
 
 def test_create_payload_supports_text_only_requests():

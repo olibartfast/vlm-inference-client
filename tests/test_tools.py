@@ -1,8 +1,8 @@
 """Tests for built-in ReAct tools (filesystem, shell, and vision stubs)."""
 
-from multimodal_agent_gateway.models import Agent
-from multimodal_agent_gateway.tools import BUILTIN_TOOLS
-from multimodal_agent_gateway.tools.builtin import (
+from ghostgrid.models import Agent
+from ghostgrid.tools import BUILTIN_TOOLS
+from ghostgrid.tools.builtin import (
     _tool_list_directory,
     _tool_read_file,
     _tool_run_bash,

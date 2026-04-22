@@ -20,4 +20,4 @@ pip install --quiet --upgrade pip
 pip install --quiet -e "${PROJECT_ROOT}[all]"
 
 # Run the CLI with all arguments
-exec vlm-agent-gateway "$@"
+exec ghostgrid "$@"

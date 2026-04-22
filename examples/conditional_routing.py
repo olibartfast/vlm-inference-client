@@ -14,9 +14,9 @@ import argparse
 import json
 import sys
 
-from multimodal_agent_gateway import run_conditional
-from multimodal_agent_gateway.cli import make_agent
-from multimodal_agent_gateway.config import resolve_endpoint
+from ghostgrid import run_conditional
+from ghostgrid.cli import make_agent
+from ghostgrid.config import resolve_endpoint
 
 
 def _build_agent(model: str, provider: str, endpoint: str | None):

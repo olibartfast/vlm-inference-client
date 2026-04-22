@@ -40,7 +40,7 @@ jobs:
 
     - name: Run tests with pytest
       run: |
-        pytest tests/ --cov=vlm_agent_gateway --cov-report=xml
+        pytest tests/ --cov=ghostgrid --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4

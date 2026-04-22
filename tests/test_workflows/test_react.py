@@ -1,8 +1,8 @@
 """Tests for the ReAct workflow — new system_prompt and allow_shell parameters."""
 
-from multimodal_agent_gateway.config import CODE_AGENT_SYSTEM_PROMPT
-from multimodal_agent_gateway.models import Agent, AgentResult
-from multimodal_agent_gateway.workflows.react import run_react
+from ghostgrid.config import CODE_AGENT_SYSTEM_PROMPT
+from ghostgrid.models import Agent, AgentResult
+from ghostgrid.workflows.react import run_react
 
 
 def _agent() -> Agent:
@@ -39,7 +39,7 @@ def test_run_react_uses_default_system_prompt(monkeypatch):
         captured.append(conversation)
         return _make_result(ag, "Thought: done\nFinal Answer: default")
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.react.run_agent", fake_run_agent)
+    monkeypatch.setattr("ghostgrid.workflows.react.run_agent", fake_run_agent)
 
     result = run_react(
         agent,
@@ -66,7 +66,7 @@ def test_run_react_uses_custom_system_prompt(monkeypatch):
         captured.append(conversation)
         return _make_result(ag, "Thought: done\nFinal Answer: custom")
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.react.run_agent", fake_run_agent)
+    monkeypatch.setattr("ghostgrid.workflows.react.run_agent", fake_run_agent)
 
     custom = "You are a CUSTOM agent.\n\nAvailable tools:\n{tool_descriptions}"
     run_react(
@@ -94,7 +94,7 @@ def test_run_react_code_agent_prompt(monkeypatch):
         captured.append(conversation)
         return _make_result(ag, "Thought: done\nFinal Answer: code answer")
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.react.run_agent", fake_run_agent)
+    monkeypatch.setattr("ghostgrid.workflows.react.run_agent", fake_run_agent)
 
     run_react(
         agent,
@@ -129,7 +129,7 @@ def test_run_react_allow_shell_false_blocks_run_bash(monkeypatch):
         # Second step: agent concludes
         return _make_result(ag, "Thought: done\nFinal Answer: shell blocked")
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.react.run_agent", fake_run_agent)
+    monkeypatch.setattr("ghostgrid.workflows.react.run_agent", fake_run_agent)
 
     result = run_react(
         agent,
@@ -161,7 +161,7 @@ def test_run_react_allow_shell_true_executes_run_bash(monkeypatch):
             )
         return _make_result(ag, "Thought: done\nFinal Answer: ran")
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.react.run_agent", fake_run_agent)
+    monkeypatch.setattr("ghostgrid.workflows.react.run_agent", fake_run_agent)
 
     result = run_react(
         agent,
@@ -191,7 +191,7 @@ def test_run_react_backward_compatible_no_new_params(monkeypatch):
     def fake_run_agent(ag, conversation, *args, **kwargs):
         return _make_result(ag, "Thought: done\nFinal Answer: ok")
 
-    monkeypatch.setattr("multimodal_agent_gateway.workflows.react.run_agent", fake_run_agent)
+    monkeypatch.setattr("ghostgrid.workflows.react.run_agent", fake_run_agent)
 
     result = run_react(
         agent,

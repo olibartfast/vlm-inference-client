@@ -1,5 +1,5 @@
 """
-Data models (dataclasses) for the Multimodal Agent Gateway.
+Data models (dataclasses) for the ghostgrid.
 """
 
 import uuid

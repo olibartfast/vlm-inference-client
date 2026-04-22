@@ -6,7 +6,7 @@ import base64
 import contextlib
 import logging
 
-log = logging.getLogger("multimodal-agent-gateway.video")
+log = logging.getLogger("ghostgrid.video")
 
 # cv2 is an optional dependency
 try:

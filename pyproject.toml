@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "multimodal-agent-gateway"
+name = "ghostgrid"
 dynamic = ["version"]
 description = "Multi-provider LLM and VLM inference with sequential, parallel, conditional, iterative, MoA, and ReAct workflows"
 readme = "README.md"
@@ -40,14 +40,14 @@ dev = [
     "mypy>=1.0.0",
 ]
 all = [
-    "multimodal-agent-gateway[video,dev]",
+    "ghostgrid[video,dev]",
 ]
 
 [project.scripts]
-agent-gateway = "multimodal_agent_gateway.cli:main"
+ghostgrid = "ghostgrid.cli:main"
 
 [project.urls]
-Repository = "https://github.com/francescoXeo/multimodal-agent-gateway"
+Repository = "https://github.com/olibartfast/ghostgrid"
 
 [tool.hatch.version]
 path = "VERSION"
@@ -65,7 +65,7 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/multimodal_agent_gateway"]
+packages = ["src/ghostgrid"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -85,5 +85,5 @@ ignore = ["E501"]
 python_version = "3.10"
 warn_return_any = true
 warn_unused_ignores = true
-packages = ["multimodal_agent_gateway"]
+packages = ["ghostgrid"]
 mypy_path = "src"
