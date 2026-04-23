@@ -21,6 +21,7 @@ def test_provider_env_map():
     assert "openai" in PROVIDER_ENV_MAP
     assert "anthropic" in PROVIDER_ENV_MAP
     assert "together" in PROVIDER_ENV_MAP
+    assert "zai" in PROVIDER_ENV_MAP
     assert PROVIDER_ENV_MAP["openai"] == "OPENAI_API_KEY"
 
 
@@ -42,6 +43,7 @@ def test_get_default_endpoint():
     assert "anthropic.com" in get_default_endpoint("anthropic")
     assert "generativelanguage.googleapis.com" in get_default_endpoint("google")
     assert "together.xyz" in get_default_endpoint("together")
+    assert "api.z.ai" in get_default_endpoint("zai")
     # Unknown provider falls back to default
     assert get_default_endpoint("unknown") == DEFAULT_ENDPOINT
 
@@ -56,6 +58,7 @@ def test_resolve_endpoint_uses_provider_default():
     """Known providers with OpenAI-compatible endpoints resolve automatically."""
     assert "anthropic.com" in resolve_endpoint("anthropic")
     assert "generativelanguage.googleapis.com" in resolve_endpoint("google")
+    assert "api.z.ai" in resolve_endpoint("zai")
 
 
 def test_get_api_key_missing():

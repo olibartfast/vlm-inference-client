@@ -2,11 +2,27 @@
 
 import json
 import time
+from collections.abc import Iterable
 
 import requests
 
 from ghostgrid.image import encode_image, is_url
 from ghostgrid.models import Agent, AgentResult, InferenceConfig
+
+
+TEXT_ONLY_MULTIMODAL_GUARDS: dict[str, str] = {
+    "glm-5.1": "GLM-5.1 is text-only on Z.AI. For image or video inputs, switch to GLM-4.6V.",
+}
+
+
+def validate_multimodal_model(model: str, image_paths: Iterable[str] | None) -> None:
+    """Reject known text-only models when image inputs are present."""
+    if not image_paths:
+        return
+
+    reason = TEXT_ONLY_MULTIMODAL_GUARDS.get(model.strip().lower())
+    if reason:
+        raise ValueError(reason)
 
 
 def create_payload(
@@ -15,6 +31,8 @@ def create_payload(
     config: InferenceConfig,
 ) -> dict:
     """Build an OpenAI-compatible chat-completions payload."""
+    validate_multimodal_model(model, config.image_paths)
+
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": [{"type": "text", "text": prompt}]}],
@@ -51,6 +69,8 @@ def build_video_payload(  # pylint: disable=too-many-arguments,too-many-position
     This is the de-facto standard for video-as-frames via the OpenAI API,
     supported natively by vLLM, SGLang, Together AI, and others.
     """
+    validate_multimodal_model(model, frame_b64_list)
+
     content: list[dict] = [{"type": "text", "text": user_prompt}]
 
     for b64 in frame_b64_list:
@@ -80,6 +100,8 @@ def create_anthropic_payload(
     config: InferenceConfig,
 ) -> dict:
     """Build an Anthropic Messages API payload with images."""
+    validate_multimodal_model(model, config.image_paths)
+
     content: list[dict] = [{"type": "text", "text": prompt}]
     for image_path in config.image_paths or []:
         if is_url(image_path) and not config.resize:
@@ -118,6 +140,8 @@ def build_anthropic_video_payload(
     System prompt is sent as a top-level field (Anthropic convention).
     Frames are encoded as base64 image source blocks.
     """
+    validate_multimodal_model(model, frame_b64_list)
+
     content: list[dict] = [{"type": "text", "text": user_prompt}]
     for b64 in frame_b64_list:
         content.append(

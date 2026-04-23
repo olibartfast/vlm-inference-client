@@ -184,6 +184,30 @@ ghostgrid monitor \
     --fps 1 --max-frames 20
 ```
 
+### Example: Kimi K2.6 via OpenRouter
+
+```bash
+ghostgrid run \
+    --workflow sequential \
+    --prompt "Describe the scene, identify hazards, and read any visible warning signs." \
+    --images frame_001.jpg frame_002.jpg \
+    --provider openrouter \
+    --model moonshotai/kimi-k2.6
+```
+
+### Example: GLM-family Vision via Z.AI
+
+```bash
+ghostgrid run \
+    --workflow sequential \
+    --prompt "Describe the inspection scene and highlight anything abnormal." \
+    --images frame_001.jpg frame_002.jpg \
+    --provider zai \
+    --model glm-4.6v
+```
+
+Do not use `GLM-5.1` for image or video inputs here. It is text-only on both Z.AI and Together AI.
+
 ---
 
 ## Integration with ghostgrid Workflows

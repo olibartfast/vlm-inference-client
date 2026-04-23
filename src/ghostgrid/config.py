@@ -18,6 +18,7 @@ PROVIDER_ENV_MAP: dict[str, str] = {
     "mistral": "MISTRAL_API_KEY",
     "cerebras": "CEREBRAS_API_KEY",
     "openrouter": "OPENROUTER_API_KEY",
+    "zai": "ZAI_API_KEY",
 }
 
 PROVIDER_DEFAULTS: dict[str, str] = {
@@ -29,6 +30,7 @@ PROVIDER_DEFAULTS: dict[str, str] = {
     "mistral": "https://api.mistral.ai/v1/chat/completions",
     "cerebras": "https://api.cerebras.ai/v1/chat/completions",
     "openrouter": "https://openrouter.ai/api/v1/chat/completions",
+    "zai": "https://api.z.ai/api/paas/v4/chat/completions",
 }
 
 

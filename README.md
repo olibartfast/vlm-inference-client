@@ -197,6 +197,8 @@ See [docs/video-vlm-agents.md](docs/video-vlm-agents.md) for model recommendatio
 | Anthropic | `anthropic` | `ANTHROPIC_API_KEY` | Native Messages API |
 | Google | `google` | `GOOGLE_API_KEY` | OpenAI-compat endpoint |
 | Together AI | `together` | `TOGETHER_API_KEY` |  |
+| OpenRouter | `openrouter` | `OPENROUTER_API_KEY` | Good default for Kimi multimodal access |
+| Z.AI | `zai` | `ZAI_API_KEY` | `GLM-5.1` text-only, `GLM-4.6V` for vision |
 | Azure OpenAI | `azure` | `AZURE_OPENAI_API_KEY` | Requires explicit `--url` |
 | Groq | `groq` | `GROQ_API_KEY` |  |
 | Mistral | `mistral` | `MISTRAL_API_KEY` |  |
@@ -205,6 +207,14 @@ See [docs/video-vlm-agents.md](docs/video-vlm-agents.md) for model recommendatio
 Together-hosted text model example:
 
 - `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8` for long-context reasoning and structured text generation
+- `zai-org/GLM-5.1` for text-only reasoning and coding
+
+Multimodal provider examples:
+
+- OpenRouter: `moonshotai/kimi-k2.6` for image-aware multimodal runs
+- Z.AI: `glm-4.6v` for GLM-family vision runs
+
+`GLM-5.1` is available on Together AI and Z.AI, but it is text-only. Use `GLM-4.6V` when you need image input.
 
 ## Python API
 
@@ -218,6 +228,20 @@ agent = make_agent(
     "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8",
     "together",
     "https://api.together.xyz/v1/chat/completions",
+)
+
+# Create an OpenRouter multimodal agent for Kimi K2.6
+kimi_agent = make_agent(
+    "moonshotai/kimi-k2.6",
+    "openrouter",
+    "https://openrouter.ai/api/v1/chat/completions",
+)
+
+# Create a Z.AI multimodal GLM agent
+glm_vision_agent = make_agent(
+    "glm-4.6v",
+    "zai",
+    "https://api.z.ai/api/paas/v4/chat/completions",
 )
 
 # Run a text-only workflow
