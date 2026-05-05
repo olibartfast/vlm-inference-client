@@ -4,3 +4,4 @@ Resources for renting GPU clusters in the cloud:
 
 * [NVIDIA Brev](https://docs.nvidia.com/brev/latest/index.html) - brev.nvidia.com
 * [RunPod](https://docs.runpod.io/overview) - runpod.io
+* [DeepInfra](https://deepinfra.com/) - deepinfra.com
