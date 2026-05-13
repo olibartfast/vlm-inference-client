@@ -56,14 +56,3 @@ class Tool:
     fn: Callable  # fn(agent, config: InferenceConfig, **kwargs) -> str
 
 
-@dataclass
-class AlertEvent:
-    """Result from a video monitoring cycle."""
-
-    timestamp: str
-    alert: bool
-    summary: str
-    confidence: str
-    recommended_action: str
-    thought: str
-    latency_ms: float

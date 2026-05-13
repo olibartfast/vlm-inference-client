@@ -1,6 +1,4 @@
-"""
-Parsing utilities for ReAct steps and monitoring output.
-"""
+"""Parsing utilities for ReAct steps."""
 
 import json
 import re
@@ -37,38 +35,3 @@ def _parse_react_step(text: str) -> tuple[str | None, str | None, dict, str | No
     return thought, action, action_input, None
 
 
-def parse_monitor_output(text: str) -> dict:
-    """
-    Parse the structured output from the monitoring agent.
-
-    Returns a dict with keys: alert, summary, confidence, recommended_action, thought
-    """
-    result = {
-        "alert": False,
-        "summary": "",
-        "confidence": "LOW",
-        "recommended_action": "",
-        "thought": "",
-    }
-
-    thought_m = re.search(r"Thought:\s*(.+?)(?=Alert:|$)", text, re.DOTALL | re.IGNORECASE)
-    if thought_m:
-        result["thought"] = thought_m.group(1).strip()
-
-    alert_m = re.search(r"Alert:\s*(YES|NO)", text, re.IGNORECASE)
-    if alert_m:
-        result["alert"] = alert_m.group(1).strip().upper() == "YES"
-
-    summary_m = re.search(r"Summary:\s*(.+?)(?=Confidence:|Alert:|$)", text, re.DOTALL | re.IGNORECASE)
-    if summary_m:
-        result["summary"] = summary_m.group(1).strip()
-
-    conf_m = re.search(r"Confidence:\s*(HIGH|MEDIUM|LOW)", text, re.IGNORECASE)
-    if conf_m:
-        result["confidence"] = conf_m.group(1).strip().upper()
-
-    action_m = re.search(r"Recommended Action:\s*(.+?)$", text, re.DOTALL | re.IGNORECASE)
-    if action_m:
-        result["recommended_action"] = action_m.group(1).strip()
-
-    return result

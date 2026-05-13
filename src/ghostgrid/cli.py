@@ -22,7 +22,6 @@ from ghostgrid.workflows import (
     run_conditional,
     run_iterative,
     run_moa,
-    run_monitoring,
     run_react,
 )
 
@@ -142,46 +141,6 @@ def cmd_run(args) -> None:  # pylint: disable=too-many-locals
         sys.exit(1)
 
 
-def cmd_monitor(args) -> None:
-    """Handle video monitoring command."""
-    correlation_id = str(uuid.uuid4())[:12]
-
-    try:
-        # Resolve endpoint
-        endpoint = resolve_endpoint(args.provider, args.endpoint)
-
-        # Resolve API key
-        env_var = PROVIDER_ENV_MAP.get(args.provider, "OPENAI_API_KEY")
-        api_key = os.getenv(env_var, "")
-        if not api_key and "localhost" not in endpoint and "127.0.0.1" not in endpoint:
-            raise RuntimeError(f"API key not found. Set {env_var} or use --endpoint for a local server.")
-        if not api_key:
-            api_key = "EMPTY"
-
-        output = run_monitoring(
-            video_source=args.video,
-            endpoint=endpoint,
-            api_key=api_key,
-            model=args.model,
-            alert_prompt=args.alert_prompt,
-            fps=args.fps,
-            max_frames=args.max_frames,
-            detail=args.detail,
-            max_tokens=args.max_tokens,
-            continuous=args.continuous,
-            interval_seconds=args.interval,
-            window_frames=args.window_frames,
-            output_jsonl=args.output_jsonl,
-            provider=args.provider,
-        )
-
-        output["correlation_id"] = correlation_id
-        print(json.dumps(output, indent=2))
-
-    except Exception as exc:  # pylint: disable=broad-exception-caught
-        print(json.dumps({"error": str(exc), "correlation_id": correlation_id}, indent=2))
-        sys.exit(1)
-
 
 def _build_run_parser(subparsers) -> None:
     """Register the 'run' subcommand."""
@@ -263,30 +222,6 @@ def _build_run_parser(subparsers) -> None:
     run_parser.set_defaults(func=cmd_run)
 
 
-def _build_monitor_parser(subparsers) -> None:
-    """Register the 'monitor' subcommand."""
-    monitor_parser = subparsers.add_parser("monitor", help="Video monitoring with a VLM")
-
-    monitor_parser.add_argument(
-        "--video",
-        "-v",
-        required=True,
-        help="Video file path, RTSP URL, or device index (0 for webcam)",
-    )
-    monitor_parser.add_argument("--fps", type=float, default=1.0, help="Frame extraction rate (default: 1.0)")
-    monitor_parser.add_argument("--max-frames", type=int, default=16, help="Max frames to extract (default: 16)")
-    monitor_parser.add_argument("--detail", type=str, default="low", choices=["auto", "low", "high"])
-    monitor_parser.add_argument("--max-tokens", type=int, default=1024)
-    monitor_parser.add_argument("--provider", "-p", type=str, default="google")
-    monitor_parser.add_argument("--model", "-m", type=str, default="gemini-2.5-flash")
-    monitor_parser.add_argument("--endpoint", "-e", type=str, default=None)
-    monitor_parser.add_argument("--alert-prompt", "-a", required=True, help="Condition to monitor for")
-    monitor_parser.add_argument("--continuous", action="store_true", help="Run in continuous mode")
-    monitor_parser.add_argument("--interval", type=float, default=10.0, help="Seconds between cycles (default: 10)")
-    monitor_parser.add_argument("--window-frames", type=int, default=8, help="Frames per window (default: 8)")
-    monitor_parser.add_argument("--output-jsonl", type=str, default=None, help="Output JSONL file path")
-    monitor_parser.set_defaults(func=cmd_monitor)
-
 
 def main() -> None:
     """Main CLI entry point."""
@@ -294,12 +229,11 @@ def main() -> None:
         prog="ghostgrid",
         description=(
             "ghostgrid — multi-provider LLM and VLM inference with "
-            "sequential, parallel, conditional, iterative, MoA, ReAct, and monitoring workflows"
+            "sequential, parallel, conditional, iterative, MoA, and ReAct workflows"
         ),
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     _build_run_parser(subparsers)
-    _build_monitor_parser(subparsers)
 
     args = parser.parse_args()
 

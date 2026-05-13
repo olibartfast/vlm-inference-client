@@ -27,7 +27,7 @@ def test_provider_env_map():
 
 def test_workflow_choices():
     """Test WORKFLOW_CHOICES contains all workflows."""
-    expected = ["sequential", "parallel", "conditional", "iterative", "moa", "react", "monitor"]
+    expected = ["sequential", "parallel", "conditional", "iterative", "moa", "react"]
     for workflow in expected:
         assert workflow in WORKFLOW_CHOICES
 

@@ -53,45 +53,6 @@ def create_payload(
     return payload
 
 
-def build_video_payload(  # pylint: disable=too-many-arguments,too-many-positional-arguments
-    model: str,
-    system_prompt: str,
-    user_prompt: str,
-    frame_b64_list: list[str],
-    max_tokens: int = 1024,
-    detail: str = "low",
-) -> dict:
-    """
-    Build an OpenAI chat-completions payload with multiple base64 frames.
-
-    The frames are sent as individual image_url content blocks.
-    This is the de-facto standard for video-as-frames via the OpenAI API,
-    supported natively by vLLM, SGLang, Together AI, and others.
-    """
-    validate_multimodal_model(model, frame_b64_list)
-
-    content: list[dict] = [{"type": "text", "text": user_prompt}]
-
-    for b64 in frame_b64_list:
-        content.append(
-            {
-                "type": "image_url",
-                "image_url": {
-                    "url": f"data:image/jpeg;base64,{b64}",
-                    "detail": detail,
-                },
-            }
-        )
-
-    return {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": content},
-        ],
-        "max_tokens": max_tokens,
-    }
-
 
 def create_anthropic_payload(
     prompt: str,
@@ -125,40 +86,6 @@ def create_anthropic_payload(
         "messages": [{"role": "user", "content": content}],
     }
 
-
-def build_anthropic_video_payload(
-    model: str,
-    system_prompt: str,
-    user_prompt: str,
-    frame_b64_list: list[str],
-    max_tokens: int = 1024,
-) -> dict:
-    """
-    Build an Anthropic Messages API payload for multi-frame video analysis.
-
-    System prompt is sent as a top-level field (Anthropic convention).
-    Frames are encoded as base64 image source blocks.
-    """
-    validate_multimodal_model(model, frame_b64_list)
-
-    content: list[dict] = [{"type": "text", "text": user_prompt}]
-    for b64 in frame_b64_list:
-        content.append(
-            {
-                "type": "image",
-                "source": {
-                    "type": "base64",
-                    "media_type": "image/jpeg",
-                    "data": b64,
-                },
-            }
-        )
-    return {
-        "model": model,
-        "system": system_prompt,
-        "max_tokens": max_tokens,
-        "messages": [{"role": "user", "content": content}],
-    }
 
 
 def send_request(

@@ -36,7 +36,7 @@ PROVIDER_DEFAULTS: dict[str, str] = {
 
 DEFAULT_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 
-WORKFLOW_CHOICES = ["sequential", "parallel", "conditional", "iterative", "moa", "react", "monitor"]
+WORKFLOW_CHOICES = ["sequential", "parallel", "conditional", "iterative", "moa", "react"]
 
 # Tools available in code-agent mode
 CODE_AGENT_TOOLS = ["read_file", "write_file", "list_directory", "run_bash", "search_files"]
@@ -93,34 +93,6 @@ Rules:
 - Read files before editing them to understand existing content.
 - Use search_files to locate relevant code before making changes.
 - Stop as soon as you can write Final Answer."""
-
-# ---------------------------------------------------------------------------
-# Video monitoring system prompt
-# ---------------------------------------------------------------------------
-
-MONITOR_SYSTEM_PROMPT = """You are a video monitoring agent. You receive a sequence of video frames
-and must analyze them for the user's specified condition.
-
-For EACH analysis cycle you MUST output exactly one of these two formats:
-
-FORMAT A — If the condition IS detected:
-Thought: <your reasoning about what you see across the frames>
-Alert: YES
-Summary: <concise description of the detected event, including which frames show it>
-Confidence: <HIGH / MEDIUM / LOW>
-Recommended Action: <what a human operator should do>
-
-FORMAT B — If the condition is NOT detected:
-Thought: <your reasoning about what you see across the frames>
-Alert: NO
-Summary: <brief description of normal scene activity>
-
-Rules:
-- Analyze ALL frames as a temporal sequence (frame 1 is earliest, last frame is latest).
-- Look for changes between frames — motion, appearance/disappearance of objects, posture changes.
-- Be precise about spatial locations and temporal progression.
-- If uncertain, set Confidence to LOW rather than generating a false alert.
-- Never fabricate observations; base everything on what you actually see in the frames."""
 
 
 # ---------------------------------------------------------------------------

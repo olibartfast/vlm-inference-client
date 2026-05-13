@@ -1,6 +1,6 @@
 """Tests for data models."""
 
-from ghostgrid.models import Agent, AlertEvent, Tool
+from ghostgrid.models import Agent, Tool
 
 
 def test_agent_creation():
@@ -40,16 +40,3 @@ def test_tool_creation():
     assert callable(tool.fn)
 
 
-def test_alert_event_creation():
-    """Test AlertEvent dataclass creation."""
-    event = AlertEvent(
-        timestamp="2024-01-01T00:00:00Z",
-        alert=True,
-        summary="Test alert",
-        confidence="HIGH",
-        recommended_action="Check camera",
-        thought="I see something",
-        latency_ms=150.0,
-    )
-    assert event.alert is True
-    assert event.confidence == "HIGH"
