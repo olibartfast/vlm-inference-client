@@ -4,7 +4,7 @@
 
 > A grid for multimodal agents — route vision, text, and code across providers through one gateway.
 
-Multi-provider LLM and VLM inference framework with 7 workflow patterns: sequential, parallel, conditional, iterative, Mixture-of-Agents (MoA), ReAct (Reasoning + Acting), and video monitoring — including **code-agent mode** (filesystem + shell tools) and **external agent backend switching** (hand off to Claude Code, Codex, opencode, or pi for a full interactive session).
+Multi-provider LLM and VLM inference framework with 6 workflow patterns: sequential, parallel, conditional, iterative, Mixture-of-Agents (MoA), and ReAct (Reasoning + Acting) — including **code-agent mode** (filesystem + shell tools) and **external agent backend switching** (hand off to Claude Code, Codex, opencode, or pi for a full interactive session).
 
 ## Installation
 
@@ -12,18 +12,15 @@ Multi-provider LLM and VLM inference framework with 7 workflow patterns: sequent
 # Install from source
 pip install -e .
 
-# With video monitoring support (requires OpenCV)
-pip install -e ".[video]"
-
 # With development tools
-pip install -e ".[dev,video]"
+pip install -e ".[dev]"
 ```
 
 ## Quick Start
 
 ```bash
 # Install the local package and CLI
-pip install -e ".[dev,video]"
+pip install -e ".[dev]"
 
 # Sequential workflow (default) - each stage builds on previous
 ghostgrid run --workflow sequential \
@@ -66,19 +63,6 @@ ghostgrid run --workflow react \
 TOGETHER_API_KEY=... python3 examples/together_nemotron_reasoning.py \
     --prompt "Design an agent architecture for triaging IT support tickets"
 
-# Video monitoring - continuous or single-shot
-ghostgrid monitor \
-    --video ./sample.mp4 \
-    --alert-prompt "Is anyone falling or in distress?" \
-    --provider google \
-    --model gemini-2.5-flash
-
-# Continuous webcam monitoring
-ghostgrid monitor \
-    --video 0 \
-    --alert-prompt "Has anyone entered the restricted area?" \
-    --continuous --interval 10
-
 # Delegate to an external coding-agent CLI (opens interactive session)
 ghostgrid run --agent-backend claude-code --prompt "refactor the auth module"
 ghostgrid run --agent-backend codex --prompt "add type hints throughout src/"
@@ -88,10 +72,9 @@ ghostgrid run --agent-backend pi
 
 ## Features
 
-- **7 workflow patterns** — `sequential`, `parallel`, `conditional`, `iterative`, `moa`, `react`, `monitor`
+- **6 workflow patterns** — `sequential`, `parallel`, `conditional`, `iterative`, `moa`, `react`
 - **Multi-provider support** — OpenAI, Anthropic (native), Google, Together, Azure, Groq, Mistral, Cerebras
 - **Text-only or multimodal runs** — use `run` with just `--prompt`, or add `--images`
-- **Video monitoring** — Fall detection, security monitoring, safety compliance
 - **Vision ReAct tools** — `describe`, `detect_objects`, `read_text`, `analyze_region`, `count_objects`
 - **Code-agent mode** — `read_file`, `write_file`, `list_directory`, `search_files`, `run_bash` (opt-in)
 - **External agent backends** — delegate to `claude-code`, `codex`, `opencode`, or `pi` for a full interactive session
@@ -108,7 +91,6 @@ ghostgrid run --agent-backend pi
 | `iterative` | 1 + evaluator | Agent loops, feeding output back until convergence |
 | `moa` | ≥ 2 + aggregator | Parallel proposers → aggregator synthesizes |
 | `react` | 1 | Thought → Action (tool) → Observation loop |
-| `monitor` | 1 | Video frames → VLM analysis → structured alerts |
 
 ## ReAct Tools
 
@@ -195,34 +177,6 @@ ghostgrid run --agent-backend pi
 
 The external CLI must be installed and on `$PATH`. If the binary is not found, ghostgrid reports the error as JSON and exits 1.
 
-## Video Monitoring
-
-The `monitor` command remains vision-specific and supports video-capable VLMs for real-time monitoring:
-
-```bash
-# Fall detection
-ghostgrid monitor \
-    --video ./elderly_room.mp4 \
-    --alert-prompt "Is anyone falling, lying on the floor, or in distress?" \
-    --fps 1 --max-frames 30
-
-# Continuous security monitoring
-ghostgrid monitor \
-    --video rtsp://camera.local:554/stream \
-    --alert-prompt "Has anyone entered the restricted zone?" \
-    --continuous --interval 10 --window-frames 8
-
-# Self-hosted with vLLM
-ghostgrid monitor \
-    --video 0 \
-    --endpoint http://localhost:8000/v1/chat/completions \
-    --model Qwen/Qwen3-VL-8B-Instruct \
-    --alert-prompt "Detect any hazard" \
-    --continuous
-```
-
-See [docs/video-vlm-agents.md](docs/video-vlm-agents.md) for model recommendations and deployment guides.
-
 ## Supported Providers
 
 | Provider | `--provider` | API Key Env Var | Notes |
@@ -253,7 +207,7 @@ Multimodal provider examples:
 ## Python API
 
 ```python
-from ghostgrid import run_sequential, run_react, run_monitoring
+from ghostgrid import run_sequential, run_react
 from ghostgrid.cli import make_agent
 from ghostgrid.config import CODE_AGENT_SYSTEM_PROMPT, CODE_AGENT_TOOLS
 
@@ -313,11 +267,10 @@ print(result["content"])
 - `examples/conditional_routing.py` routes an image task between OCR, scene, and safety specialists.
 - `examples/local_open_model.py` runs a self-hosted open model through a local OpenAI-compatible endpoint.
 - `examples/together_nemotron_reasoning.py` runs NVIDIA Nemotron 3 Super on Together AI for text-only reasoning and long-context tasks.
-- `examples/multi_model_analysis.py`, `examples/fall_detection.py`, and `examples/security_monitoring.py` cover MoA and monitoring flows.
+- `examples/multi_model_analysis.py` covers MoA flows.
 
 ## Documentation
 
-- [Video VLM Agents Guide](docs/video-vlm-agents.md) — Video-capable VLMs, vLLM deployment, hardware sizing
 - [API Services](docs/api-services.md) — LLM and multimodal API providers
 - [Benchmarks](docs/benchmarks.md) — LLM, VLM, and video evaluation references
 - [Inference](docs/inference.md) — Inference frameworks and tools

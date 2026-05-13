@@ -19,9 +19,6 @@ Before editing any Python under src/ or tests/:
   - **No duplicated blocks of ≥ 6 lines across modules (pylint R0801).**
     Shared result-dict construction → ghostgrid/workflows/_utils.py
     Shared run_agent call signature → pass through **kwargs
-    Shared cv2.VideoCapture guard → ghostgrid/video.py
-  - cv2 is an allowed pylint extension (already in pyproject); use
-    cv2.<member> directly, do not wrap in try/except ImportError.
   - Do NOT add docstrings/comments/types to code you did not change.
 Playbook: .claude/skills/ci-guardian/SKILL.md
 </ghostgrid-ci-reminder>

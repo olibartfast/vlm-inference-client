@@ -26,7 +26,7 @@ env:
 jobs:
   # ------------------------------------------------------------------
   # Lint: ruff + pylint. Runs first because it's the fastest and catches
-  # the I001/F401/F841/C408/R0801/cv2 failures that dominate CI history.
+  # the I001/F401/F841/C408/R0801 failures that dominate CI history.
   # ------------------------------------------------------------------
   lint:
     name: Lint (ruff + pylint)
@@ -43,13 +43,11 @@ jobs:
             pyproject.toml
             requirements.txt
 
-      - name: Install project (dev + video extras)
+      - name: Install project (dev extras)
         # Mirrors .claude/hooks/pre_push_ci_gate.sh so local == CI.
-        # Video extra is mandatory here — pylint must be able to import cv2
-        # when checking src/ghostgrid/video.py, otherwise E0401 fires.
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,video]"
+          pip install -e ".[dev]"
 
       - name: Ruff check
         # --output-format=github turns violations into inline PR annotations.
@@ -89,10 +87,10 @@ jobs:
             pyproject.toml
             requirements.txt
 
-      - name: Install project (dev + video extras)
+      - name: Install project (dev extras)
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,video]"
+          pip install -e ".[dev]"
 
       - name: Mypy (soft-fail per AGENTS.md)
         run: mypy src/ || true

@@ -17,7 +17,7 @@ All other AI agent config files (`CLAUDE.md`, `GEMINI.md`, `.github/copilot-inst
 ## Development setup
 
 ```bash
-pip install -e ".[dev,video]"   # install with all dev + video deps
+pip install -e ".[dev]"         # install with dev deps
 pytest tests/                   # run tests
 ruff check src/ tests/          # lint
 ruff format src/ tests/         # format
@@ -48,7 +48,6 @@ Common patterns that have triggered R0801 in this codebase and how to fix them:
 |---------|----------------|
 | Per-agent result dict `{agent_id, model, provider, latency_ms, success, error}` | Extract a `_result_to_dict(r)` helper in `ghostgrid/workflows/_utils.py` |
 | `run_agent(agent, ..., image_paths, detail, max_tokens, resize, target_size)` call signature | Pass through as `**kwargs` or use a shared `_call_agent` wrapper |
-| `cv2.VideoCapture` open + guard block (`contextlib.suppress` + `cap.isOpened()`) | Centralise in `ghostgrid/video.py` and import from there |
 
 ### Other conventions
 
@@ -64,15 +63,14 @@ Common patterns that have triggered R0801 in this codebase and how to fix them:
 
 ```
 src/ghostgrid/          # main package
-  workflows/            # sequential, parallel, moa, react, iterative, conditional, monitoring
+  workflows/            # sequential, parallel, moa, react, iterative, conditional
   tools/                # builtin ReAct tools + parsing helpers
   providers.py          # provider dispatch + run_agent
   backends.py           # external agent backend dispatch (claude-code, codex, opencode, pi)
-  models.py             # Agent, AgentResult, Tool, AlertEvent dataclasses
+  models.py             # Agent, AgentResult, Tool dataclasses
   config.py             # env/config helpers + system prompts
   cli.py                # argparse CLI
   image.py              # image encoding + resize helpers
-  video.py              # OpenCV frame extraction helpers
 tests/                  # pytest suite (mirrors src layout)
 examples/               # runnable example scripts
 docs/                   # markdown documentation

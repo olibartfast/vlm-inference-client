@@ -91,7 +91,6 @@ lines does not fix it — extraction does.
 |---|---|---|
 | `{agent_id, model, provider, latency_ms, success, error}` dict | `src/ghostgrid/workflows/_utils.py` | `_result_to_dict(r: AgentResult) -> dict` |
 | Full `run_agent(agent, prompt, image_paths, detail, max_tokens, resize, target_size)` call | `src/ghostgrid/workflows/_utils.py` | `_call_agent(agent, prompt, **kwargs) -> AgentResult` |
-| `cv2.VideoCapture` open + `isOpened()` guard | `src/ghostgrid/video.py` | extend existing helpers, do not add a second one |
 | Provider URL / headers construction | `src/ghostgrid/providers.py` | extend the dispatch, do not duplicate |
 
 ### Fix
@@ -111,43 +110,6 @@ pylint src/ghostgrid/ --disable=all --enable=R0801
 - Creating a new `common.py` or `helpers.py` — violates the canonical map.
 - Renaming variables to "dedupe" by confusing pylint's token comparison —
   pure tech debt, will reappear on the next change.
-
----
-
-## §opencv — pylint E1101 / import-error on cv2
-
-**Symptom.**
-```
-E1101: Module 'cv2' has no 'VideoCapture' member (no-member)
-E0401: Unable to import 'cv2' (import-error)
-```
-
-**Root cause.** OpenCV's Python bindings are a C extension. Pylint cannot
-statically inspect C extensions, so every `cv2.X` reference looks unknown.
-
-**Fix (already applied — CI run #20).** `pyproject.toml` must include:
-
-```toml
-[tool.pylint.MASTER]
-extension-pkg-allow-list = ["cv2"]
-# or the older equivalent:
-# extension-pkg-whitelist = "cv2"
-```
-
-Verify it's there before anything else. If it is and you still see the
-error, pylint version is probably < 2.5; bump it in `requirements-dev`.
-
-### Non-fixes
-
-- `# pylint: disable=no-member` on every `cv2.X` line — pollutes the code.
-- `try: import cv2 except ImportError: cv2 = None` — ghostgrid declares
-  cv2 as an optional extra (`[video]`), handle the optional import *once*
-  in `src/ghostgrid/video.py` using the pattern already in that file.
-
-**Local reproduce.**
-```bash
-pylint src/ghostgrid/video.py
-```
 
 ---
 
@@ -228,11 +190,10 @@ etc.) during `pytest` collection in CI.
 `ci.yml` is:
 
 ```yaml
-- run: pip install -e ".[dev,video]"
+- run: pip install -e ".[dev]"
 ```
 
-If you see `ModuleNotFoundError: cv2`, the `[video]` extra was dropped from
-the install step. Add it back — don't skip the test.
+If you see `ModuleNotFoundError` for a test dependency, verify the `[dev]` extra is present in the install step.
 
 ---
 
