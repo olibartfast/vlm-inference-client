@@ -5,10 +5,16 @@ Built-in ReAct tools for vision analysis and code/filesystem operations.
 import os
 import subprocess
 
+from ghostgrid.config import CREDENTIAL_ENV_VARS
 from ghostgrid.models import Agent, InferenceConfig, Tool
 from ghostgrid.providers import run_agent
 
 _SHELL_BLOCKED = "Shell execution is disabled. Re-run with --allow-shell to enable run_bash."
+
+
+def _safe_env() -> dict[str, str]:
+    """Return os.environ with credential env vars redacted."""
+    return {k: v for k, v in os.environ.items() if k not in CREDENTIAL_ENV_VARS}
 
 
 def _tool_describe(agent: Agent, config: InferenceConfig, **kwargs) -> str:
@@ -120,6 +126,7 @@ def _tool_run_bash(_agent: Agent, _config: InferenceConfig, **kwargs) -> str:
             text=True,
             timeout=30,
             check=False,
+            env=_safe_env(),
         )
         output = proc.stdout
         if proc.stderr:
@@ -144,6 +151,7 @@ def _tool_search_files(_agent: Agent, _config: InferenceConfig, **kwargs) -> str
             text=True,
             timeout=15,
             check=False,
+            env=_safe_env(),
         )
         output = proc.stdout.strip()
         if not output:
@@ -157,6 +165,16 @@ def _tool_search_files(_agent: Agent, _config: InferenceConfig, **kwargs) -> str
         return "ERROR: Search timed out."
     except Exception as exc:  # pylint: disable=broad-exception-caught
         return f"ERROR: {exc}"
+
+
+def register_tool(tool: Tool) -> None:
+    """Register a custom tool into the global BUILTIN_TOOLS registry."""
+    BUILTIN_TOOLS[tool.name] = tool
+
+
+def unregister_tool(name: str) -> None:
+    """Remove a tool from the global BUILTIN_TOOLS registry."""
+    BUILTIN_TOOLS.pop(name, None)
 
 
 BUILTIN_TOOLS: dict[str, Tool] = {

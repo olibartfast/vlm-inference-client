@@ -25,12 +25,6 @@ from ghostgrid.workflows import (
     run_react,
 )
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%H:%M:%S",
-)
-
 
 def make_agent(model: str, provider: str, endpoint: str) -> Agent:
     """Create a single Agent from model/provider/endpoint."""
@@ -69,8 +63,27 @@ def _make_role_agent(model, provider, endpoint, agents: list[Agent]) -> Agent:
     )
 
 
+logger = logging.getLogger(__name__)
+
+
+def _setup_logging(args) -> None:
+    """Configure logging based on CLI flags."""
+    log_level = getattr(args, "log_level", "INFO").upper()
+    log_file = getattr(args, "log_file", None)
+    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stderr)]
+    if log_file:
+        handlers.append(logging.FileHandler(log_file))
+    logging.basicConfig(
+        level=getattr(logging, log_level, logging.INFO),
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        datefmt="%H:%M:%S",
+        handlers=handlers,
+    )
+
+
 def cmd_run(args) -> None:  # pylint: disable=too-many-locals
     """Handle standard workflow commands."""
+    _setup_logging(args)
     correlation_id = str(uuid.uuid4())[:12]
 
     try:
@@ -88,6 +101,7 @@ def cmd_run(args) -> None:  # pylint: disable=too-many-locals
             max_tokens=args.tokens,
             resize=args.resize,
             target_size=tuple(args.size),
+            stream=getattr(args, "stream", False),
         )
 
         if args.workflow == "sequential":
@@ -137,6 +151,7 @@ def cmd_run(args) -> None:  # pylint: disable=too-many-locals
         print(json.dumps(output, indent=2))
 
     except Exception as exc:  # pylint: disable=broad-exception-caught
+        logger.exception("Workflow failed")
         print(json.dumps({"error": str(exc), "correlation_id": correlation_id}, indent=2))
         sys.exit(1)
 
@@ -217,6 +232,24 @@ def _build_run_parser(subparsers) -> None:
         default=None,
         choices=BACKEND_CHOICES,
         help="Delegate to an external coding-agent CLI instead of an LLM API. Choices: %(choices)s",
+    )
+    run_parser.add_argument(
+        "--stream",
+        action="store_true",
+        help="Stream tokens as they are generated (SSE). Content is accumulated and returned in the final JSON.",
+    )
+    run_parser.add_argument(
+        "--log-level",
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        help="Log level for stderr output (default: INFO)",
+    )
+    run_parser.add_argument(
+        "--log-file",
+        type=str,
+        default=None,
+        help="Write logs to a file in addition to stderr",
     )
     run_parser.set_defaults(func=cmd_run)
 

@@ -9,11 +9,12 @@ and 6 workflow patterns (sequential, parallel, conditional, iterative, MoA, ReAc
 from pathlib import Path
 
 # Agent backends
-from ghostgrid.backends import BACKEND_CHOICES, open_backend_session
+from ghostgrid.backends import BACKEND_CHOICES, open_backend_session, sanitize_env
 
 # Core models
 # Configuration
 from ghostgrid.config import (
+    CREDENTIAL_ENV_VARS,
     DEFAULT_ENDPOINT,
     PROVIDER_ENV_MAP,
     WORKFLOW_CHOICES,
@@ -24,7 +25,7 @@ from ghostgrid.config import (
 
 # Image utilities
 from ghostgrid.image import encode_image, is_url, resize_with_padding
-from ghostgrid.models import Agent, AgentResult, Tool
+from ghostgrid.models import Agent, AgentResult, InferenceConfig, Tool
 
 # Provider functions
 from ghostgrid.providers import (
@@ -32,10 +33,11 @@ from ghostgrid.providers import (
     normalize_response,
     run_agent,
     send_request,
+    stream_request,
 )
 
 # Tools
-from ghostgrid.tools import BUILTIN_TOOLS
+from ghostgrid.tools import BUILTIN_TOOLS, register_tool, unregister_tool
 
 # Workflows
 from ghostgrid.workflows import (
@@ -65,11 +67,14 @@ __all__ = [
     # Backends
     "BACKEND_CHOICES",
     "open_backend_session",
+    "sanitize_env",
     # Models
     "Agent",
     "AgentResult",
+    "InferenceConfig",
     "Tool",
     # Config
+    "CREDENTIAL_ENV_VARS",
     "DEFAULT_ENDPOINT",
     "PROVIDER_ENV_MAP",
     "WORKFLOW_CHOICES",
@@ -85,8 +90,11 @@ __all__ = [
     "normalize_response",
     "run_agent",
     "send_request",
+    "stream_request",
     # Tools
     "BUILTIN_TOOLS",
+    "register_tool",
+    "unregister_tool",
     # Workflows
     "WORKFLOW_REGISTRY",
     "run_conditional",

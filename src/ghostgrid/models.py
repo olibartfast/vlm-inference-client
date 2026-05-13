@@ -44,6 +44,7 @@ class InferenceConfig:
     max_tokens: int
     resize: bool
     target_size: tuple[int, int]
+    stream: bool = False
 
 
 @dataclass

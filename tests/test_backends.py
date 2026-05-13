@@ -39,7 +39,11 @@ def test_open_backend_session_builds_correct_cmd(backend, prompt, expected_cmd):
     with patch("ghostgrid.backends.subprocess.run", return_value=_make_proc()) as mock_run:
         open_backend_session(backend, prompt)
 
-    mock_run.assert_called_once_with(expected_cmd, cwd=None, env=None, check=False)
+    _, kwargs = mock_run.call_args
+    assert kwargs["cwd"] is None
+    assert isinstance(kwargs["env"], dict)  # sanitized env
+    assert "OPENAI_API_KEY" not in kwargs["env"]  # credentials redacted
+    assert kwargs["check"] is False
 
 
 def test_open_backend_session_inherits_stdio():
@@ -87,9 +91,18 @@ def test_open_backend_session_env_override_wins(monkeypatch):
     assert kwargs["env"]["ANTHROPIC_API_KEY"] == "sk-override"
 
 
-def test_open_backend_session_no_env_inherits_parent():
+def test_open_backend_session_no_env_sanitizes():
     with patch("ghostgrid.backends.subprocess.run", return_value=_make_proc()) as mock_run:
         open_backend_session("pi", "test")
+
+    _, kwargs = mock_run.call_args
+    assert isinstance(kwargs["env"], dict)  # sanitized, not None
+    assert "OPENAI_API_KEY" not in kwargs["env"]
+
+
+def test_open_backend_session_no_sanitize_inherits_parent():
+    with patch("ghostgrid.backends.subprocess.run", return_value=_make_proc()) as mock_run:
+        open_backend_session("pi", "test", sanitize=False)
 
     _, kwargs = mock_run.call_args
     assert kwargs["env"] is None

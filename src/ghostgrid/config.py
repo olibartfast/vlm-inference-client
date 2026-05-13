@@ -41,6 +41,9 @@ WORKFLOW_CHOICES = ["sequential", "parallel", "conditional", "iterative", "moa",
 # Tools available in code-agent mode
 CODE_AGENT_TOOLS = ["read_file", "write_file", "list_directory", "run_bash", "search_files"]
 
+# Environment variable names that contain credentials — redacted from subprocess environments
+CREDENTIAL_ENV_VARS: set[str] = set(PROVIDER_ENV_MAP.values())
+
 # ---------------------------------------------------------------------------
 # ReAct system prompt template
 # ---------------------------------------------------------------------------
