@@ -33,5 +33,3 @@ def _parse_react_step(text: str) -> tuple[str | None, str | None, dict, str | No
         action_input = {}
 
     return thought, action, action_input, None
-
-

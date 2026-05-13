@@ -141,7 +141,6 @@ def cmd_run(args) -> None:  # pylint: disable=too-many-locals
         sys.exit(1)
 
 
-
 def _build_run_parser(subparsers) -> None:
     """Register the 'run' subcommand."""
     run_parser = subparsers.add_parser("run", help="Run an LLM or VLM workflow")
@@ -220,7 +219,6 @@ def _build_run_parser(subparsers) -> None:
         help="Delegate to an external coding-agent CLI instead of an LLM API. Choices: %(choices)s",
     )
     run_parser.set_defaults(func=cmd_run)
-
 
 
 def main() -> None:

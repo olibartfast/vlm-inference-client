@@ -53,7 +53,6 @@ def create_payload(
     return payload
 
 
-
 def create_anthropic_payload(
     prompt: str,
     model: str,
@@ -85,7 +84,6 @@ def create_anthropic_payload(
         "max_tokens": config.max_tokens,
         "messages": [{"role": "user", "content": content}],
     }
-
 
 
 def send_request(

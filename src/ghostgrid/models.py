@@ -54,5 +54,3 @@ class Tool:
     description: str
     parameters: str  # JSON schema hint shown to the agent
     fn: Callable  # fn(agent, config: InferenceConfig, **kwargs) -> str
-
-

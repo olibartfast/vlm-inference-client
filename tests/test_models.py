@@ -38,5 +38,3 @@ def test_tool_creation():
     )
     assert tool.name == "test_tool"
     assert callable(tool.fn)
-
-
